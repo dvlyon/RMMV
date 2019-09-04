@@ -1,7 +1,5 @@
 {
-	"boDisplay": 1.01,
 	"core": 1,
-	"dbi": 2.1,
-	"fw": 1.21,
-	"nlbo": 1.21
+	"kks": 1,
+	"promos": 1
 }
