@@ -8,14 +8,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1;
+DvLyon.Core.version = 1.1;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Sep 2, 2019
-@version 1.0.0
+@date Sep 6, 2019
+@version 1.1.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -47,6 +47,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.1.0 - Sep 6, 2019
+ * Added commaSeparatedToIntArray helper.
 1.0.0 - Sep 2, 2019
  * Release.
 
@@ -140,6 +142,17 @@ function toIntArray(array) {
 		var int = parseInt(array[i], 10)
 		if (!isNaN(int)) {
 			intArray.push(int)
+		}
+	}
+	return intArray
+}
+
+function commaSeparatedToIntArray(array) {
+	var intArray = array.split(',')
+	for (var i = 0; intArray && (i < intArray.length); i++) {
+		var int = parseInt(intArray[i], 10)
+		if (!isNaN(int)) {
+			intArray[i] = int
 		}
 	}
 	return intArray
