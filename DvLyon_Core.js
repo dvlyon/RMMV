@@ -8,14 +8,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.1;
+DvLyon.Core.version = 1.11;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Sep 6, 2019
-@version 1.1.0
+@date Sep 30, 2019
+@version 1.1.1
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -47,8 +47,10 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.1.1 - Sep 30, 2019
+ * (Bugfix) Small fix that breaks older versions of the plugin.
 1.1.0 - Sep 6, 2019
- * Added commaSeparatedToIntArray helper.
+ * (Feature) Added commaSeparatedToIntArray helper.
 1.0.0 - Sep 2, 2019
  * Release.
 
@@ -210,14 +212,14 @@ function DvLyonTree() {
 	var _DataManager_makeSaveContents = DataManager.makeSaveContents
 	DataManager.makeSaveContents = function() {
 		var contents = _DataManager_makeSaveContents.call(this)
-		contents.foundation = $gameDvLyon
+		contents.dvlyon = $gameDvLyon
 		return contents
 	}
 
 	var _DataManager_extractSaveContents = DataManager.extractSaveContents
 	DataManager.extractSaveContents = function(contents) {
 		_DataManager_extractSaveContents.call(this, contents)
-		$gameDvLyon = contents.foundation || new Game_DvLyon()
+		$gameDvLyon = contents.dvlyon
 	}
 
 	/* SceneManager */
