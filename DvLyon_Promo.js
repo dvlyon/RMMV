@@ -1,22 +1,22 @@
 //=============================================================================
 // DvLyon Games
-// DvLyon_Promos.js
+// DvLyon_Promo.js
 //=============================================================================
 
 var Imported = Imported || {};
-Imported.DvLyon_Promos = true;
+Imported.DvLyon_Promo = true;
 
 var DvLyon = DvLyon || {};
-DvLyon.Promos = DvLyon.Promos || {};
-DvLyon.Promos.version = 1;
+DvLyon.Promo = DvLyon.Promo || {};
+DvLyon.Promo.version = 1;
 
 /*:
 -------------------------------------------------------------------------
-@title DvLyon Promos
+@title DvLyon Promo
 @author DvLyon Games @ https://games.dvlyon.com
-@date Sep 4, 2019
+@date Dec 20, 2019
 @version 1.0.0
-@filename DvLyon_Promos.js
+@filename DvLyon_Promo.js
 @url https://games.dvlyon.com
 
 Contact:
@@ -25,7 +25,7 @@ Contact:
 * Twitter: https://twitter.com/DvLyon
 
 -------------------------------------------------------------------------------
-@plugindesc DvLyon Boot Promos
+@plugindesc DvLyon Boot Promo Scene
 @help 
 -------------------------------------------------------------------------------
 == Description ==
@@ -47,8 +47,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
-1.0.0 - Sep 4, 2019
- * Release.
+1.0.0 - Dec 20, 2019
+ * (Release) Release.
 
 == Usage ==
 
@@ -78,7 +78,7 @@ Images must be placed in img/dvlyon.
 // Dependencies
 //=============================================================================
 
-if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1) {
+if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1.2) {
 
 //=============================================================================
 // Plugin Start
@@ -86,55 +86,61 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1) {
 
 (function() {
 
-	/* Parameters */
+	//=============================================================================
+	// Parameters
+	//=============================================================================
 
-	DvLyon.Promos.Parameters = PluginManager.parameters('DvLyon_Promos')
+	DvLyon.Promo.Parameters = PluginManager.parameters('DvLyon_Promo')
 
-	DvLyon.Promos.Image = DvLyon.Promos.Parameters['Image']
-	DvLyon.Promos.FadeSpeed = toNumber(DvLyon.Promos.Parameters['FadeSpeed'], 24)
+	DvLyon.Promo.Image = toText(DvLyon.Promo.Parameters['Image'], null)
+	DvLyon.Promo.FadeSpeed = toNumber(DvLyon.Promo.Parameters['FadeSpeed'], 24)
+
+	//=============================================================================
+	// Scenes
+	//=============================================================================
 
 	/* Scene_Boot */
 
 	var _Scene_Boot_loadSystemImages = Scene_Boot.prototype.loadSystemImages
 	Scene_Boot.prototype.loadSystemImages = function() {
 		_Scene_Boot_loadSystemImages.call(this)
-		ImageManager.loadDvLyon(DvLyon.Promos.Image)
+		ImageManager.loadDvLyon(DvLyon.Promo.Image)
 	}
 
 	var _Scene_Boot_start = Scene_Boot.prototype.start
 	Scene_Boot.prototype.start = function() {
 		if (!DataManager.isBattleTest() && !DataManager.isEventTest()) {
-			SceneManager.goto(Scene_DvLyonPromos)
+			SceneManager.goto(Scene_DvLyonPromo)
 		} else {
 			_Scene_Boot_start.call(this)
 		}
 	}
 
 	//-----------------------------------------------------------------------------
-	// Scene_DvLyonPromos
+	// Scene_DvLyonPromo
 	//
 	// The scene class for showing the DvLyon Games splash screen.
 
-	function Scene_DvLyonPromos() {
+	function Scene_DvLyonPromo() {
 	    this.initialize.apply(this, arguments)
 	}
 
-	Scene_DvLyonPromos.prototype = Object.create(Scene_Base.prototype)
-	Scene_DvLyonPromos.prototype.constructor = Scene_DvLyonPromos
+	Scene_DvLyonPromo.prototype = Object.create(Scene_Base.prototype)
+	Scene_DvLyonPromo.prototype.constructor = Scene_DvLyonPromo
 
-	Scene_DvLyonPromos.prototype.initialize = function() {
+	Scene_DvLyonPromo.prototype.initialize = function() {
 		Scene_Base.prototype.initialize.call(this)
 		this._splashImage = null
 		this._splashFadeIn = false
 		this._splashFadeOut = false
 	}
 
-	Scene_DvLyonPromos.prototype.create = function() {
+	Scene_DvLyonPromo.prototype.create = function() {
 		Scene_Base.prototype.create.call(this)
 		this.createSplashes()
 	}
 
-	Scene_DvLyonPromos.prototype.start = function() {
+	Scene_DvLyonPromo.prototype.start = function() {
 		Scene_Base.prototype.start.call(this)
 		SceneManager.clearStack()
 		if (this._splashImage !== null) {
@@ -142,7 +148,7 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1) {
 		}
 	}
 
-	Scene_DvLyonPromos.prototype.update = function() {
+	Scene_DvLyonPromo.prototype.update = function() {
 		Scene_Base.prototype.update.call(this)
 		if (!this.isBusy()) {
 			if (!this._splashFadeIn) {
@@ -157,30 +163,30 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1) {
 		}
 	}
 
-	Scene_DvLyonPromos.prototype.createSplashes = function() {
-		this._splashImage = new Sprite(ImageManager.loadDvLyon(DvLyon.Promos.Image))
+	Scene_DvLyonPromo.prototype.createSplashes = function() {
+		this._splashImage = new Sprite(ImageManager.loadDvLyon(DvLyon.Promo.Image))
 		this.addChild(this._splashImage)
 	}
 
-	Scene_DvLyonPromos.prototype.centerSprite = function(sprite) {
+	Scene_DvLyonPromo.prototype.centerSprite = function(sprite) {
 		sprite.x = Graphics.width / 2
 		sprite.y = Graphics.height / 2
 		sprite.anchor.x = 0.5
 		sprite.anchor.y = 0.5
 	}
 
-	Scene_DvLyonPromos.prototype.checkPlayerLocation = function() {
+	Scene_DvLyonPromo.prototype.checkPlayerLocation = function() {
 		if ($dataSystem.startMapId === 0) {
 			throw new Error('Player\'s starting position is not set')
 		}
 	}
 
-	Scene_DvLyonPromos.prototype.updateDocumentTitle = function() {
+	Scene_DvLyonPromo.prototype.updateDocumentTitle = function() {
 		document.title = $dataSystem.gameTitle
 	}
 
-	Scene_DvLyonPromos.prototype.fadeSpeed = function() {
-		return DvLyon.Promos.FadeSpeed
+	Scene_DvLyonPromo.prototype.fadeSpeed = function() {
+		return DvLyon.Promo.FadeSpeed
 	}
 
 })()
@@ -190,7 +196,7 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1) {
 //=============================================================================
 
 } else {
-	var text = 'DvLyon_Promos requires DvLyon_Core at the latest version to run.'
+	var text = 'DvLyon_Promo requires DvLyon_Core at the latest version to run.'
 	console.error(text)
 	require('nw.gui').Window.get().showDevTools()
 }
@@ -207,8 +213,8 @@ function versionChecker() {
 		return response.json()
 	})
 	.then(function(body) {
-		if (body && (body.promos > DvLyon.Promos.version)) {
-			var text = 'An updated version of DvLyon_Promos is available at https://games.dvlyon.com'
+		if (body && (body.promo > DvLyon.Promo.version)) {
+			var text = 'An updated version of DvLyon_Promo is available at https://games.dvlyon.com'
 			console.info(text)
 		}
 	})

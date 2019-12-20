@@ -56,7 +56,7 @@ We want to keep growing and making your RMMV experience better!
 1.1.0 - Sep 6, 2019
  * (Feature) Added commaSeparatedToIntArray helper.
 1.0.0 - Sep 2, 2019
- * Release.
+ * (Release) Release.
 
 == Usage ==
 
