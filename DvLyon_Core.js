@@ -8,14 +8,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.11;
+DvLyon.Core.version = 1.2;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Sep 30, 2019
-@version 1.1.1
+@date Dec 20, 2019
+@version 1.2.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -47,6 +47,10 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.2.0 - Dec 20, 2019
+ * (Removed) Removed commaSeparatedToIntArray helper, as it was basically the
+ same as toIntArray.
+ * (Cosmetic) Reordered plugin.
 1.1.1 - Sep 30, 2019
  * (Bugfix) Small fix that breaks older versions of the plugin.
 1.1.0 - Sep 6, 2019
@@ -81,7 +85,7 @@ Install and configure parameters.
 */
 
 //=============================================================================
-// Definitions
+// Helpers
 //=============================================================================
 
 function toNumber(str, def) {
@@ -100,7 +104,7 @@ function toBool(str, def) {
 		case 'false':
 			return false
 		default:
-			return def ? true : false
+			return !!def ? true : false
 	}
 }
 
@@ -149,22 +153,19 @@ function toIntArray(array) {
 	return intArray
 }
 
-function commaSeparatedToIntArray(array) {
-	var intArray = array.split(',')
-	for (var i = 0; intArray && (i < intArray.length); i++) {
-		var int = parseInt(intArray[i], 10)
-		if (!isNaN(int)) {
-			intArray[i] = int
-		}
-	}
-	return intArray
-}
+//=============================================================================
+// Definitions
+//=============================================================================
 
 /* Number */
 
 Number.prototype.makeId = function() {
 	return Math.floor(Math.max(this, 0))
 }
+
+//=============================================================================
+// Declarations
+//=============================================================================
 
 /* Game_DvLyon */
 
@@ -192,14 +193,19 @@ function DvLyonTree() {
 
 (function() {
 
-	/* Parameters */
+	//=============================================================================
+	// Parameters
+	//=============================================================================
 
 	DvLyon.Core.Parameters = PluginManager.parameters('DvLyon_Core')
 
 	DvLyon.Core.ScreenWidth = toNumber(DvLyon.Core.Parameters['ScreenWidth'], 816)
 	DvLyon.Core.ScreenHeight = toNumber(DvLyon.Core.Parameters['ScreenHeight'], 624)
-
 	DvLyon.Core.SkipTitle = toBool(DvLyon.Core.Parameters['SkipTitle'], false)
+
+	//=============================================================================
+	// Managers
+	//=============================================================================
 
 	/* DataManager */
 
@@ -222,25 +228,6 @@ function DvLyonTree() {
 		$gameDvLyon = contents.dvlyon
 	}
 
-	/* SceneManager */
-
-	SceneManager._screenWidth = DvLyon.Core.ScreenWidth
-	SceneManager._screenHeight = DvLyon.Core.ScreenHeight
-	SceneManager._boxWidth = DvLyon.Core.ScreenWidth
-	SceneManager._boxHeight = DvLyon.Core.ScreenHeight
-
-	var _SceneManager_initNwjs = SceneManager.initNwjs
-	SceneManager.initNwjs = function() {
-		_SceneManager_initNwjs.call(this, arguments)
-
-		if (Utils.isNwjs()) {
-			var dw = DvLyon.Core.ScreenWidth - window.innerWidth
-			var dh = DvLyon.Core.ScreenHeight - window.innerHeight
-			window.moveBy(-dw / 2, -dh / 2)
-			window.resizeBy(dw, dh)
-		}
-	}
-
 	/* ImageManager */
 
 	ImageManager.loadDvLyon = function(filename, hue) {
@@ -251,33 +238,40 @@ function DvLyonTree() {
 		return this.reserveBitmap('img/dvlyon/', filename, hue, true, reservationId)
 	}
 
-	//-----------------------------------------------------------------------------
-	// Game_DvLyon
-	//
-	// The game object class for all things DvLyon.
+	/* SceneManager */
 
-	Game_DvLyon.prototype.initialize = function() {
-		this.clear()
+	SceneManager._screenWidth = DvLyon.Core.ScreenWidth
+	SceneManager._screenHeight = DvLyon.Core.ScreenHeight
+	SceneManager._boxWidth = DvLyon.Core.ScreenWidth
+	SceneManager._boxHeight = DvLyon.Core.ScreenHeight
+
+	var _SceneManager_initNwjs = SceneManager.initNwjs
+	SceneManager.initNwjs = function() {
+		_SceneManager_initNwjs.call(this, arguments)
+		if (Utils.isNwjs()) {
+			var dw = DvLyon.Core.ScreenWidth - window.innerWidth
+			var dh = DvLyon.Core.ScreenHeight - window.innerHeight
+			window.moveBy(-dw / 2, -dh / 2)
+			window.resizeBy(dw, dh)
+		}
 	}
 
-	Game_DvLyon.prototype.clear = function() {}
-
-	Game_DvLyon.prototype.screenUpdate = function() {}
-
-	Game_DvLyon.prototype.onBattleStart = function() {}
+	//=============================================================================
+	// Objects
+	//=============================================================================
 
 	/* Game_Screen */
-
-	var _Game_Screen_update = Game_Screen.prototype.update
-	Game_Screen.prototype.update = function() {
-		_Game_Screen_update.call(this)
-		$gameDvLyon.screenUpdate()
-	}
 
 	var _Game_Screen_onBattleStart = Game_Screen.prototype.onBattleStart
 	Game_Screen.prototype.onBattleStart = function() {
 		_Game_Screen_onBattleStart.call(this)
 		$gameDvLyon.onBattleStart()
+	}
+
+	var _Game_Screen_update = Game_Screen.prototype.update
+	Game_Screen.prototype.update = function() {
+		_Game_Screen_update.call(this)
+		$gameDvLyon.screenUpdate()
 	}
 
 	/* Game_BattlerBase */
@@ -308,6 +302,25 @@ function DvLyonTree() {
 		return !this._eventId
 	}
 
+	//-----------------------------------------------------------------------------
+	// Game_DvLyon
+	//
+	// The game object class for all things DvLyon.
+
+	Game_DvLyon.prototype.initialize = function() {
+		this.clear()
+	}
+
+	Game_DvLyon.prototype.clear = function() {}
+
+	Game_DvLyon.prototype.screenUpdate = function() {}
+
+	Game_DvLyon.prototype.onBattleStart = function() {}
+
+	//=============================================================================
+	// Scenes
+	//=============================================================================
+
 	/* Scene_Boot */
 
 	var _Scene_Boot_start = Scene_Boot.prototype.start
@@ -325,6 +338,10 @@ function DvLyonTree() {
 		}
 	}
 
+	//=============================================================================
+	// Windows
+	//=============================================================================
+
 	/* Window_Base */
 
 	Window_Base.prototype.drawFace = function(faceName, faceIndex, x, y, width, height) {
@@ -337,6 +354,10 @@ function DvLyonTree() {
 		var sy = Math.floor(faceIndex / 4) * sh
 		this.contents.bltImage(bitmap, sx, sy, sw, sh, x, y, width, height)
 	}
+
+	//=============================================================================
+	// Extra
+	//=============================================================================
 
 	//-----------------------------------------------------------------------------
 	// DvLyonTree
