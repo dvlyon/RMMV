@@ -8,14 +8,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.2;
+DvLyon.Core.version = 1.3;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Dec 20, 2019
-@version 1.2.0
+@date Dec 24, 2019
+@version 1.3.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -47,6 +47,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.3.0 - Dec 24, 2019
+ * (Feature) Added shuffleArray helper.
 1.2.0 - Dec 20, 2019
  * (Removed) Removed commaSeparatedToIntArray helper, as it was basically the
  same as toIntArray.
@@ -151,6 +153,16 @@ function toIntArray(array) {
 		}
 	}
 	return intArray
+}
+
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
+		var j = Math.floor(Math.random() * (i + 1))
+		var temp = array[i]
+		array[i] = array[j]
+		array[j] = temp
+	}
+	return array
 }
 
 //=============================================================================
