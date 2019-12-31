@@ -1,3 +1,5 @@
+"use strict";
+
 //=============================================================================
 // DvLyon Games
 // DvLyon_Core.js
@@ -8,14 +10,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.3;
+DvLyon.Core.version = 1.31;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Dec 24, 2019
-@version 1.3.0
+@date Dec 31, 2019
+@version 1.3.1
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -47,6 +49,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.3.1 - Dec 31, 2019
+ * (Feature) Now with strict mode.
 1.3.0 - Dec 24, 2019
  * (Feature) Added shuffleArray helper.
 1.2.0 - Dec 20, 2019

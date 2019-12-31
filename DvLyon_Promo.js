@@ -1,3 +1,5 @@
+"use strict";
+
 //=============================================================================
 // DvLyon Games
 // DvLyon_Promo.js
@@ -8,14 +10,14 @@ Imported.DvLyon_Promo = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Promo = DvLyon.Promo || {};
-DvLyon.Promo.version = 1;
+DvLyon.Promo.version = 1.01;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Promo
 @author DvLyon Games @ https://games.dvlyon.com
-@date Dec 20, 2019
-@version 1.0.0
+@date Dec 31, 2019
+@version 1.0.1
 @filename DvLyon_Promo.js
 @url https://games.dvlyon.com
 
@@ -47,6 +49,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.0.1 - Dec 31, 2019
+ * (Feature) Now with strict mode.
 1.0.0 - Dec 20, 2019
  * (Release) Release.
 
