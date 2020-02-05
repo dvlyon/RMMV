@@ -10,14 +10,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.4;
+DvLyon.Core.version = 1.5;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Jan 28, 2019
-@version 1.4.0
+@date Feb 5, 2019
+@version 1.5.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -49,6 +49,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.5.0 - Feb 5, 2019
+ * (Feature) Added better drawIcon.
 1.4.0 - Jan 28, 2019
  * (Feature) Added ConfigManager.readText function.
 1.3.1 - Dec 31, 2019
@@ -367,6 +369,17 @@ function DvLyonTree() {
 	//=============================================================================
 
 	/* Window_Base */
+
+	Window_Base.prototype.drawIcon = function(iconIndex, x, y, width, height) {
+		width = width || Window_Base._iconWidth
+		height = height || Window_Base._iconHeight
+		var bitmap = ImageManager.loadSystem('IconSet')
+		var pw = Window_Base._iconWidth
+		var ph = Window_Base._iconHeight
+		var sx = iconIndex % 16 * pw
+		var sy = Math.floor(iconIndex / 16) * ph
+		this.contents.blt(bitmap, sx, sy, pw, ph, x, y, width, height)
+	}
 
 	Window_Base.prototype.drawFace = function(faceName, faceIndex, x, y, width, height) {
 		width = width || Window_Base._faceWidth
