@@ -10,14 +10,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.5;
+DvLyon.Core.version = 1.6;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Feb 5, 2019
-@version 1.5.0
+@date Feb 27, 2020
+@version 1.6.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -49,9 +49,12 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
-1.5.0 - Feb 5, 2019
+1.6.0 - Feb 27, 2020
+ * (Feature) Added refreshAllWindows function.
+ * (Cosmetic) Fixed incorrect changelog dates.
+1.5.0 - Feb 5, 2020
  * (Feature) Added better drawIcon.
-1.4.0 - Jan 28, 2019
+1.4.0 - Jan 28, 2020
  * (Feature) Added ConfigManager.readText function.
 1.3.1 - Dec 31, 2019
  * (Feature) Now with strict mode.
@@ -342,6 +345,21 @@ function DvLyonTree() {
 	Game_DvLyon.prototype.screenUpdate = function() {}
 
 	Game_DvLyon.prototype.onBattleStart = function() {}
+
+	Game_DvLyon.prototype.refreshAllWindows = function() {
+		const scene = SceneManager._scene
+		if (!!scene && !!scene._windowLayer) {
+			const layer = scene._windowLayer
+			if (!!layer.children) {
+				layer.children.forEach(function(win) {
+					win.resetFontSettings()
+					if (!!win.refresh) {
+						win.refresh()
+					}
+				})
+			}
+		}
+	}
 
 	//=============================================================================
 	// Scenes
