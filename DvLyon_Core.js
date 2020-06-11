@@ -10,14 +10,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.6;
+DvLyon.Core.version = 1.7;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Feb 27, 2020
-@version 1.6.0
+@date Jun 6, 2020
+@version 1.7.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -49,6 +49,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.7.0 - Jun 6, 2020
+ * (Feature) Added drawDvLyon method for windows.
 1.6.0 - Feb 27, 2020
  * (Feature) Added refreshAllWindows function.
  * (Cosmetic) Fixed incorrect changelog dates.
@@ -408,6 +410,13 @@ function DvLyonTree() {
 		var sx = faceIndex % 4 * sw
 		var sy = Math.floor(faceIndex / 4) * sh
 		this.contents.bltImage(bitmap, sx, sy, sw, sh, x, y, width, height)
+	}
+
+	Window_Base.prototype.drawDvLyon = function(file, x, y, width, height) {
+		const bitmap = ImageManager.loadDvLyon(file)
+		const sw = bitmap.width
+		const sh = bitmap.height
+		this.contents.blt(bitmap, 0, 0, sw, sh, x, y, width, height)
 	}
 
 	//=============================================================================
