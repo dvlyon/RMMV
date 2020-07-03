@@ -51,6 +51,7 @@ We want to keep growing and making your RMMV experience better!
 
 1.8.0 - Jul 3, 2020
  * (Feature) Added isCurrentScene method to the SceneManager.
+ * (Bugfix) Replaced unadvised var declarations.
 1.7.0 - Jun 6, 2020
  * (Feature) Added drawDvLyon method for windows.
 1.6.0 - Feb 27, 2020
