@@ -10,14 +10,14 @@ Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.7;
+DvLyon.Core.version = 1.8;
 
 /*:
 -------------------------------------------------------------------------
 @title DvLyon Core
 @author DvLyon Games @ https://games.dvlyon.com
-@date Jun 6, 2020
-@version 1.7.0
+@date Jul 3, 2020
+@version 1.8.0
 @filename DvLyon_Core.js
 @url https://games.dvlyon.com
 
@@ -49,6 +49,8 @@ We want to keep growing and making your RMMV experience better!
 
 == Change Log ==
 
+1.8.0 - Jul 3, 2020
+ * (Feature) Added isCurrentScene method to the SceneManager.
 1.7.0 - Jun 6, 2020
  * (Feature) Added drawDvLyon method for windows.
 1.6.0 - Feb 27, 2020
@@ -128,8 +130,8 @@ function toDimColor(dim) {
 		return null
 	}
 	dim = dim.split(',')
-	var dimColor = 'rgba('
-	for (var i = 0; i < 4; i++) {
+	let dimColor = 'rgba('
+	for (let i = 0; i < 4; i++) {
 		dimColor += toNumber(dim[i], 0)
 		if (i < 3) {
 			dimColor += ','
@@ -141,8 +143,8 @@ function toDimColor(dim) {
 
 function toTone(tone) {
 	tone = tone.split(',')
-	var rgbg = []
-	for (var i = 0; i < 3; i++) {
+	let rgbg = []
+	for (let i = 0; i < 3; i++) {
 		rgbg.push(toNumber(tone[i] || 0).clamp(-255, 255))
 	}
 	rgbg.push(toNumber(tone[3] || 0).clamp(0, 255))
@@ -158,9 +160,9 @@ function circularDistance(x1, y1, x2, y2) {
 }
 
 function toIntArray(array) {
-	var intArray = []
-	for (var i = 0; array && (i < array.length); i++) {
-		var int = parseInt(array[i], 10)
+	let intArray = []
+	for (let i = 0; array && (i < array.length); i++) {
+		const int = parseInt(array[i], 10)
 		if (!isNaN(int)) {
 			intArray.push(int)
 		}
@@ -169,9 +171,9 @@ function toIntArray(array) {
 }
 
 function shuffleArray(array) {
-	for (var i = array.length - 1; i > 0; i--) {
-		var j = Math.floor(Math.random() * (i + 1))
-		var temp = array[i]
+	for (let i = array.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1))
+		const temp = array[i]
 		array[i] = array[j]
 		array[j] = temp
 	}
@@ -234,20 +236,20 @@ function DvLyonTree() {
 
 	/* DataManager */
 
-	var _DataManager_createGameObjects = DataManager.createGameObjects
+	const _DataManager_createGameObjects = DataManager.createGameObjects
 	DataManager.createGameObjects = function() {
 		_DataManager_createGameObjects.call(this)
 		$gameDvLyon = new Game_DvLyon()
 	}
 
-	var _DataManager_makeSaveContents = DataManager.makeSaveContents
+	const _DataManager_makeSaveContents = DataManager.makeSaveContents
 	DataManager.makeSaveContents = function() {
-		var contents = _DataManager_makeSaveContents.call(this)
+		let contents = _DataManager_makeSaveContents.call(this)
 		contents.dvlyon = $gameDvLyon
 		return contents
 	}
 
-	var _DataManager_extractSaveContents = DataManager.extractSaveContents
+	const _DataManager_extractSaveContents = DataManager.extractSaveContents
 	DataManager.extractSaveContents = function(contents) {
 		_DataManager_extractSaveContents.call(this, contents)
 		$gameDvLyon = contents.dvlyon
@@ -276,15 +278,19 @@ function DvLyonTree() {
 	SceneManager._boxWidth = DvLyon.Core.ScreenWidth
 	SceneManager._boxHeight = DvLyon.Core.ScreenHeight
 
-	var _SceneManager_initNwjs = SceneManager.initNwjs
+	const _SceneManager_initNwjs = SceneManager.initNwjs
 	SceneManager.initNwjs = function() {
 		_SceneManager_initNwjs.call(this, arguments)
 		if (Utils.isNwjs()) {
-			var dw = DvLyon.Core.ScreenWidth - window.innerWidth
-			var dh = DvLyon.Core.ScreenHeight - window.innerHeight
+			const dw = DvLyon.Core.ScreenWidth - window.innerWidth
+			const dh = DvLyon.Core.ScreenHeight - window.innerHeight
 			window.moveBy(-dw / 2, -dh / 2)
 			window.resizeBy(dw, dh)
 		}
+	}
+
+	SceneManager.isCurrentScene = function(sceneClass) {
+		return this._scene && this._scene.constructor === sceneClass
 	}
 
 	//=============================================================================
@@ -293,13 +299,13 @@ function DvLyonTree() {
 
 	/* Game_Screen */
 
-	var _Game_Screen_onBattleStart = Game_Screen.prototype.onBattleStart
+	const _Game_Screen_onBattleStart = Game_Screen.prototype.onBattleStart
 	Game_Screen.prototype.onBattleStart = function() {
 		_Game_Screen_onBattleStart.call(this)
 		$gameDvLyon.onBattleStart()
 	}
 
-	var _Game_Screen_update = Game_Screen.prototype.update
+	const _Game_Screen_update = Game_Screen.prototype.update
 	Game_Screen.prototype.update = function() {
 		_Game_Screen_update.call(this)
 		$gameDvLyon.screenUpdate()
@@ -369,7 +375,7 @@ function DvLyonTree() {
 
 	/* Scene_Boot */
 
-	var _Scene_Boot_start = Scene_Boot.prototype.start
+	const _Scene_Boot_start = Scene_Boot.prototype.start
 	Scene_Boot.prototype.start = function() {
 		if (DvLyon.Core.SkipTitle && !DataManager.isBattleTest() && !DataManager.isEventTest()
 			&& !DataManager.isAnySavefileExists()) {
@@ -393,22 +399,22 @@ function DvLyonTree() {
 	Window_Base.prototype.drawIcon = function(iconIndex, x, y, width, height) {
 		width = width || Window_Base._iconWidth
 		height = height || Window_Base._iconHeight
-		var bitmap = ImageManager.loadSystem('IconSet')
-		var pw = Window_Base._iconWidth
-		var ph = Window_Base._iconHeight
-		var sx = iconIndex % 16 * pw
-		var sy = Math.floor(iconIndex / 16) * ph
+		const bitmap = ImageManager.loadSystem('IconSet')
+		const pw = Window_Base._iconWidth
+		const ph = Window_Base._iconHeight
+		const sx = iconIndex % 16 * pw
+		const sy = Math.floor(iconIndex / 16) * ph
 		this.contents.blt(bitmap, sx, sy, pw, ph, x, y, width, height)
 	}
 
 	Window_Base.prototype.drawFace = function(faceName, faceIndex, x, y, width, height) {
 		width = width || Window_Base._faceWidth
 		height = height || Window_Base._faceHeight
-		var bitmap = ImageManager.loadFace(faceName)
-		var sw = Window_Base._faceWidth
-		var sh = Window_Base._faceHeight
-		var sx = faceIndex % 4 * sw
-		var sy = Math.floor(faceIndex / 4) * sh
+		const bitmap = ImageManager.loadFace(faceName)
+		const sw = Window_Base._faceWidth
+		const sh = Window_Base._faceHeight
+		const sx = faceIndex % 4 * sw
+		const sy = Math.floor(faceIndex / 4) * sh
 		this.contents.bltImage(bitmap, sx, sy, sw, sh, x, y, width, height)
 	}
 
@@ -429,8 +435,8 @@ function DvLyonTree() {
 	// A tree structure.
 
 	DvLyonTree.prototype.add = function(data, toNodeData, extra) {
-		var node = new DvLyonTreeNode(data, extra)
-		var parent = toNodeData ? this.findBFS(toNodeData) : null
+		const node = new DvLyonTreeNode(data, extra)
+		let parent = toNodeData ? this.findBFS(toNodeData) : null
 		if (parent) {
 			parent.children.push(node)
 		} else {
@@ -443,14 +449,14 @@ function DvLyonTree() {
 	}
 
 	DvLyonTree.prototype.findBFS = function(data) {
-		var queue = [this.root]
+		let queue = [this.root]
 		if (queue) {
 			while(queue.length) {
-				var node = queue.shift()
+				const node = queue.shift()
 				if (node.data === data) {
 					return node
 				}
-				for (var i = 0; i < node.children.length; i++) {
+				for (let i = 0; i < node.children.length; i++) {
 					queue.push(node.children[i])
 				}
 			}
@@ -469,15 +475,15 @@ function DvLyonTree() {
 //=============================================================================
 
 function versionChecker() {
-	var url = "https://raw.githubusercontent.com/dvlyon/RMMV-Free/master/versions.json"
-	var request = new Request(url)
+	const url = "https://raw.githubusercontent.com/dvlyon/RMMV-Free/master/versions.json"
+	const request = new Request(url)
 	fetch(request)
 	.then(function(response) {
 		return response.json()
 	})
 	.then(function(body) {
 		if (body && (body.core > DvLyon.Core.version)) {
-			var text = 'An updated version of DvLyon_Core is available at https://games.dvlyon.com'
+			const text = 'An updated version of DvLyon_Core is available at https://games.dvlyon.com'
 			console.info(text)
 		}
 	})
