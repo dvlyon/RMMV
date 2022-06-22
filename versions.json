@@ -1,4 +1,16 @@
 {
-	"core": 1.8,
-	"promo": 1.01
+	"core": {
+		"filename": "DvLyon_Core.js",
+		"name": "Core Functions",
+		"priority": "high",
+		"url": "Utils/Core/",
+		"version": 2
+	},
+    "promo": {
+		"filename": "DvLyon_Promo.js",
+		"name": "Promo Scene",
+		"priority": "normal",
+		"url": "Scenes/Promo/",
+		"version": 2
+	}
 }

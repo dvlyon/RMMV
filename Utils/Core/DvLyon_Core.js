@@ -1,38 +1,22 @@
 "use strict";
 
 //=============================================================================
-// DvLyon Games
-// DvLyon_Core.js
+// DvLyon
+// RPG Maker MV - DvLyon_Core.js
 //=============================================================================
-
-var Imported = Imported || {};
-Imported.DvLyon_Core = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Core = DvLyon.Core || {};
-DvLyon.Core.version = 1.8;
+DvLyon.Core.version = 2;
 
 /*:
--------------------------------------------------------------------------
-@title DvLyon Core
-@author DvLyon Games @ https://games.dvlyon.com
-@date Jul 3, 2020
-@version 1.8.0
-@filename DvLyon_Core.js
-@url https://games.dvlyon.com
-
-Contact:
-
-* Website: https://games.dvlyon.com
-* Twitter: https://twitter.com/DvLyon
-
--------------------------------------------------------------------------------
-@plugindesc DvLyon Core Functions
+@plugindesc Core Functions
+@author DvLyon
+@url https://dvlyon.com
 @help 
--------------------------------------------------------------------------------
 == Description ==
 
-DvLyon Core Functions and RMMV Settings Modifier.
+Visit https://dvlyon.com/rmmv/plugins/core
 
 == License ==
 
@@ -40,66 +24,28 @@ DvLyon Core Functions and RMMV Settings Modifier.
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-== Terms of Use ==
+== Contributing ==
 
-If you could credit DvLyon and https://games.dvlyon.com, we'd really
+If you could credit DvLyon and https://dvlyon.com, I'd really
 appreciate it!
 
-We want to keep growing and making your RMMV experience better!
+@param ScreenWidth
+@text Screen Width
+@desc Sets the screen width (Default: 816).
+@default 816
 
-== Change Log ==
+@param ScreenHeight
+@text Screen Height
+@desc Sets the screen height (Default: 624).
+@default 624
 
-1.8.0 - Jul 3, 2020
- * (Feature) Added isCurrentScene method to the SceneManager.
- * (Bugfix) Replaced unadvised var declarations.
-1.7.0 - Jun 6, 2020
- * (Feature) Added drawDvLyon method for windows.
-1.6.0 - Feb 27, 2020
- * (Feature) Added refreshAllWindows function.
- * (Cosmetic) Fixed incorrect changelog dates.
-1.5.0 - Feb 5, 2020
- * (Feature) Added better drawIcon.
-1.4.0 - Jan 28, 2020
- * (Feature) Added ConfigManager.readText function.
-1.3.1 - Dec 31, 2019
- * (Feature) Now with strict mode.
-1.3.0 - Dec 24, 2019
- * (Feature) Added shuffleArray helper.
-1.2.0 - Dec 20, 2019
- * (Removed) Removed commaSeparatedToIntArray helper, as it was basically the
- same as toIntArray.
- * (Cosmetic) Reordered plugin.
-1.1.1 - Sep 30, 2019
- * (Bugfix) Small fix that breaks older versions of the plugin.
-1.1.0 - Sep 6, 2019
- * (Feature) Added commaSeparatedToIntArray helper.
-1.0.0 - Sep 2, 2019
- * (Release) Release.
-
-== Usage ==
-
-Install and configure parameters.
-
--------------------------------------------------------------------------------
- *
- * @param ScreenWidth
- * @text Screen Width
- * @desc Sets the screen width (Default: 816).
- * @default 816
- *
- * @param ScreenHeight
- * @text Screen Height
- * @desc Sets the screen height (Default: 624).
- * @default 624
- *
- * @param SkipTitle
- * @text Skip Title If No Save
- * @desc Skips the title scene (straight to map) if there's no save data. (Default: No.)
- * @type boolean
- * @on Yes
- * @off No
- * @default false
- *
+@param SkipTitle
+@text Skip Title If No Save
+@desc Skips the title scene (straight to map) if there's no save data. (Default: No.)
+@type boolean
+@on Yes
+@off No
+@default false
 */
 
 //=============================================================================
@@ -476,15 +422,15 @@ function DvLyonTree() {
 //=============================================================================
 
 function versionChecker() {
-	const url = "https://raw.githubusercontent.com/dvlyon/RMMV-Free/master/versions.json"
+	const url = "https://raw.githubusercontent.com/dvlyon/RMMV/main/versions.json"
 	const request = new Request(url)
 	fetch(request)
 	.then(function(response) {
 		return response.json()
 	})
 	.then(function(body) {
-		if (body && (body.core > DvLyon.Core.version)) {
-			const text = 'An updated version of DvLyon_Core is available at https://games.dvlyon.com'
+		if (body && body.core && (body.core.version > DvLyon.Core.version)) {
+			const text = 'An updated version of DvLyon_Core is available at https://dvlyon.com/rmmv/plugins/core'
 			console.info(text)
 		}
 	})
