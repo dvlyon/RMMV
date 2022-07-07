@@ -11,8 +11,7 @@ DvLyon.Core.version = 2;
 
 /*:
 @plugindesc Core Functions
-@author DvLyon
-@url https://dvlyon.com
+@author DvLyon - https://dvlyon.com
 @help 
 == Description ==
 

@@ -2,37 +2,20 @@
 
 //=============================================================================
 // DvLyon Games
-// DvLyon_Promo.js
+// RPG Maker MV - DvLyon_Promo.js
 //=============================================================================
-
-var Imported = Imported || {};
-Imported.DvLyon_Promo = true;
 
 var DvLyon = DvLyon || {};
 DvLyon.Promo = DvLyon.Promo || {};
-DvLyon.Promo.version = 1.01;
+DvLyon.Promo.version = 2;
 
 /*:
--------------------------------------------------------------------------
-@title DvLyon Promo
-@author DvLyon Games @ https://games.dvlyon.com
-@date Dec 31, 2019
-@version 1.0.1
-@filename DvLyon_Promo.js
-@url https://games.dvlyon.com
-
-Contact:
-
-* Website: https://games.dvlyon.com
-* Twitter: https://twitter.com/DvLyon
-
--------------------------------------------------------------------------------
-@plugindesc DvLyon Boot Promo Scene
-@help 
--------------------------------------------------------------------------------
+@plugindesc Promo Scene
+@author DvLyon - https://dvlyon.com
+@help
 == Description ==
 
-Displays an image on game load, before Title Screen.
+Visit https://dvlyon.com/rmmv/plugins/promo
 
 == License ==
 
@@ -40,49 +23,29 @@ Displays an image on game load, before Title Screen.
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-== Terms of Use ==
+== Contributing ==
 
-If you could credit DvLyon and https://games.dvlyon.com, we'd really
+If you could credit DvLyon and https://dvlyon.com, I'd really
 appreciate it!
 
-We want to keep growing and making your RMMV experience better!
+@param Image
+@desc Image to display on game load.
+@type file
+@dir img/dvlyon/
+@require 1
+@default
 
-== Change Log ==
-
-1.0.1 - Dec 31, 2019
- * (Feature) Now with strict mode.
-1.0.0 - Dec 20, 2019
- * (Release) Release.
-
-== Usage ==
-
-Install, activate and configure parameters.
-
-== Notes ==
-
-Images must be placed in img/dvlyon.
-
--------------------------------------------------------------------------------
- *
- * @param Image
- * @desc Image to display on game load.
- * @type file
- * @dir img/dvlyon/
- * @require 1
- * @default
- *
- * @param FadeSpeed
- * @text Fade Speed
- * @desc Sets the fading speed for the splash image. (Default: 24).
- * @default 24
- *
+@param FadeSpeed
+@text Fade Speed
+@desc Sets the fading speed for the splash image. (Default: 24).
+@default 24
 */
 
 //=============================================================================
 // Dependencies
 //=============================================================================
 
-if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1.2) {
+if (DvLyon && DvLyon.Core && DvLyon.Core.version >= 2) {
 
 //=============================================================================
 // Plugin Start
@@ -105,13 +68,13 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1.2) {
 
 	/* Scene_Boot */
 
-	var _Scene_Boot_loadSystemImages = Scene_Boot.prototype.loadSystemImages
+	const _Scene_Boot_loadSystemImages = Scene_Boot.prototype.loadSystemImages
 	Scene_Boot.prototype.loadSystemImages = function() {
 		_Scene_Boot_loadSystemImages.call(this)
 		ImageManager.loadDvLyon(DvLyon.Promo.Image)
 	}
 
-	var _Scene_Boot_start = Scene_Boot.prototype.start
+	const _Scene_Boot_start = Scene_Boot.prototype.start
 	Scene_Boot.prototype.start = function() {
 		if (!DataManager.isBattleTest() && !DataManager.isEventTest()) {
 			SceneManager.goto(Scene_DvLyonPromo)
@@ -200,7 +163,7 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1.2) {
 //=============================================================================
 
 } else {
-	var text = 'DvLyon_Promo requires DvLyon_Core at the latest version to run.'
+	const text = 'DvLyon_Promo requires DvLyon_Core at the latest version to run.'
 	console.error(text)
 	require('nw.gui').Window.get().showDevTools()
 }
@@ -210,15 +173,15 @@ if (Imported.DvLyon_Core && DvLyon.Core && DvLyon.Core.version >= 1.2) {
 //=============================================================================
 
 function versionChecker() {
-	var url = "https://raw.githubusercontent.com/dvlyon/RMMV-Free/master/versions.json"
-	var request = new Request(url)
+	const url = "https://raw.githubusercontent.com/dvlyon/RMMV/main/versions.json"
+	const request = new Request(url)
 	fetch(request)
 	.then(function(response) {
 		return response.json()
 	})
 	.then(function(body) {
-		if (body && (body.promo > DvLyon.Promo.version)) {
-			var text = 'An updated version of DvLyon_Promo is available at https://games.dvlyon.com'
+        if (body && body.promo && (body.promo.version > DvLyon.Promo.version)) {
+			const text = 'An updated version of DvLyon_Promo is available at https://dvlyon.com/rmmv/plugins/promo'
 			console.info(text)
 		}
 	})

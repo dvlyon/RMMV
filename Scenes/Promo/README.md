@@ -26,15 +26,15 @@ Simply install, activate and configure parameters.
 
 #### Parameters
 
-##### Display Images
-###### file[]
+##### Image
+###### file
 
-List of images to be displayed before game load.
+Image to be displayed before game load.
 
 ##### Fade Speed
 ###### number
 
-Fading speed for the displayed images.
+Fading speed for the displayed image.
 
 ### Changelog
 
